@@ -88,7 +88,7 @@ Include `<script src="js/modules/square-roots.js"></script>` and it **automatica
 ## 🗂️ File Directory
 
 ```
-d:/Downloads/animation/
+Indian-Knowledge-System
 ├── index.html                           # Main web application structure
 ├── style.css                            # CSS variables (Light/Dark mode), layouts & responsive rules
 ├── README.md                            # Documentation & architecture explanation
