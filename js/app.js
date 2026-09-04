@@ -144,29 +144,41 @@ class VedicAppCoordinator {
       });
     });
 
-    // Handle mobile hamburger menu
+    // Handle mobile hamburger menu and close button
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebar-overlay');
+    
+    const closeSidebar = () => {
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
+    };
+
     if (mobileMenuBtn && sidebar) {
       mobileMenuBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        if (overlay) overlay.classList.toggle('active');
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
       });
-      if (overlay) {
-        overlay.addEventListener('click', () => {
-          sidebar.classList.remove('open');
-          overlay.classList.remove('active');
-        });
-      }
+    }
+
+    if (sidebarCloseBtn) {
+      sidebarCloseBtn.addEventListener('click', closeSidebar);
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', closeSidebar);
     }
   }
 
   navigateTo(viewName) {
     this.currentView = viewName;
 
-    // Update active state in sidebar
+    // Update active state in sidebar and mobile bottom nav
     document.querySelectorAll('.nav-item').forEach(link => {
+      link.classList.toggle('active', link.dataset.view === viewName);
+    });
+    document.querySelectorAll('.mob-nav-item').forEach(link => {
       link.classList.toggle('active', link.dataset.view === viewName);
     });
 
