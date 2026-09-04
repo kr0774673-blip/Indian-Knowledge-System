@@ -178,7 +178,7 @@ class VedicAppCoordinator {
 
     // Update Topbar Title
     const titleMap = {
-      dashboard: 'Dashboard',
+      dashboard: 'Indian Knowledge System',
       courses: 'Courses & Modules',
       techniques: 'Techniques & Sutra Solver',
       practice: 'Speed Practice',
