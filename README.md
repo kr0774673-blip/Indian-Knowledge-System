@@ -124,3 +124,6 @@ python -m http.server 3000
 npx serve .
 ```
 Then visit `http://localhost:3000`.
+
+### Method 3: Simply click in URL: https://kr0774673-blip.github.io/Indian-Knowledge-System/
+
