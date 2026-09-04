@@ -151,6 +151,25 @@ button {
   gap: 12px;
   padding: 0 8px 24px 8px;
   border-bottom: 1px solid var(--border-light);
+  position: relative;
+}
+
+.sidebar-close-btn {
+  display: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background-color: var(--border-light);
+  color: var(--text-main);
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.sidebar-close-btn:hover {
+  background-color: var(--border-color);
 }
 
 .brand-logo-img {
@@ -1865,93 +1884,501 @@ button {
 /* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
    ========================================================================== */
+
+/* Global Mobile Defenses */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Tablet & Intermediate Screens (<= 1200px) */
 @media (max-width: 1200px) {
   .hero-thought-row {
     grid-template-columns: 1fr;
+    gap: 18px;
   }
   .main-two-col {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
   .techniques-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .content-area {
+    padding: 0 24px 40px 24px;
+  }
 }
 
+/* Tablet & Mobile Drawer Navigation (<= 992px) */
 @media (max-width: 992px) {
   .sidebar {
+    width: min(300px, 82vw);
     transform: translateX(-100%);
+    box-shadow: var(--shadow-lg);
   }
+  
   .sidebar.open {
     transform: translateX(0);
   }
+  
+  .sidebar-close-btn {
+    display: flex;
+  }
+
   .sidebar-overlay.active {
     display: block;
   }
+
   .main-wrapper {
     margin-left: 0;
+    width: 100%;
   }
+
   .mobile-menu-btn {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
   }
-  .stats-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
+
   .topbar {
-    padding: 16px 20px;
+    padding: 14px 20px;
   }
+
   .content-area {
-    padding: 0 20px 30px 20px;
+    padding: 0 20px 84px 20px; /* Space for bottom nav */
+  }
+
+  /* Mobile Bottom Navigation Bar */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 62px;
+    background-color: var(--bg-sidebar);
+    border-top: 1px solid var(--border-color);
+    z-index: 990;
+    justify-content: space-around;
+    align-items: center;
+    padding: 4px 6px env(safe-area-inset-bottom, 6px) 6px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .mob-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: 6px 8px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: var(--transition);
+    min-width: 58px;
+  }
+
+  .mob-nav-item svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+    transition: var(--transition);
+  }
+
+  .mob-nav-item:hover, .mob-nav-item.active {
+    color: var(--primary);
+  }
+
+  .mob-nav-item.active svg {
+    transform: translateY(-1px);
   }
 }
 
+/* Smartphone View (<= 640px) */
 @media (max-width: 640px) {
-  .stats-row {
-    grid-template-columns: 1fr;
+  .topbar {
+    padding: 10px 14px;
+    gap: 10px;
   }
-  .techniques-grid {
-    grid-template-columns: 1fr;
+
+  .topbar-left {
+    gap: 10px;
   }
-  .hero-banner-card {
-    flex-direction: column-reverse;
-    text-align: center;
+
+  .page-title {
+    font-size: 1.25rem;
+    letter-spacing: -0.2px;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .theme-toggle-btn, .notif-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .theme-toggle-btn svg, .notif-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .user-profile-badge {
+    padding: 3px;
+    gap: 0;
+  }
+
+  .user-avatar-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.82rem;
+  }
+
+  .user-name, .dropdown-icon {
+    display: none;
+  }
+
+  .content-area {
+    padding: 0 14px 84px 14px;
+  }
+
+  .dashboard-grid {
     gap: 16px;
-    padding: 24px 16px 12px 16px;
   }
+
+  /* Hero Banner Card on Phone */
+  .hero-banner-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 16px 0 16px;
+    min-height: auto;
+    gap: 10px;
+  }
+
   .hero-text-content {
     max-width: 100%;
-    padding-bottom: 12px;
+    padding-bottom: 0;
+    width: 100%;
   }
+
+  .hero-title {
+    font-size: 1.35rem;
+    line-height: 1.25;
+    margin-bottom: 6px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+
+  .hero-banner-card .btn-primary {
+    width: 100%;
+    padding: 11px;
+    font-size: 0.92rem;
+  }
+
   .hero-visual-content {
     width: 100%;
     max-width: 100%;
-    height: 180px;
+    height: 170px;
     justify-content: center;
-    margin-right: 0;
+    align-items: flex-end;
+    margin: 8px 0 0 0;
   }
+
   .hero-char-img {
+    max-height: 170px;
     object-position: bottom center;
   }
+
+  /* Today's Thought on Phone */
+  .thought-card {
+    padding: 18px 16px;
+  }
+
+  .thought-mandala-art {
+    width: 100px;
+    height: 100px;
+    right: -20px;
+    bottom: -20px;
+  }
+
+  /* 4 Stats Cards in 2x2 Phone Grid */
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 12px 10px;
+    gap: 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .stat-icon-wrap {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .stat-icon-wrap svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .stat-number {
+    font-size: 1.2rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+  }
+
+  .stat-subtext, .stat-badge-text, .stat-link {
+    font-size: 0.68rem;
+  }
+
+  /* Continue Learning Card */
   .continue-card {
     flex-direction: column;
     align-items: flex-start;
+    padding: 14px;
+    gap: 12px;
   }
+
   .continue-thumb-box {
     width: 100%;
-    height: 140px;
+    height: 130px;
   }
+
   .continue-details {
     width: 100%;
   }
-  .course-footer {
-    flex-direction: column;
+
+  .continue-title {
+    font-size: 0.98rem;
   }
-  .topbar {
+
+  .continue-sub {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .btn-resume {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  /* Top Techniques in 2-Column Phone Grid */
+  .techniques-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-  .page-title {
-    font-size: 1.3rem;
+
+  .technique-card {
+    padding: 12px 10px;
+    gap: 8px;
+    border-radius: var(--radius-sm);
   }
-  .user-name {
+
+  .tech-icon-circle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .tech-icon-circle svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .tech-name {
+    font-size: 0.82rem;
+    line-height: 1.25;
+  }
+
+  .tech-translation {
+    font-size: 0.68rem;
+    line-height: 1.3;
+  }
+
+  /* Recent Activity Card */
+  .recent-activity-card {
+    padding: 16px 12px;
+  }
+
+  .activity-table th, .activity-table td {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+
+  /* Hide Date column on small phones to prevent cramped table */
+  .activity-table th:nth-child(4),
+  .activity-table td:nth-child(4) {
     display: none;
+  }
+
+  /* Courses & Modules View */
+  .courses-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .courses-ocp-banner {
+    padding: 16px;
+  }
+
+  .courses-ocp-banner h3 {
+    font-size: 1.1rem;
+  }
+
+  .course-module-card {
+    padding: 18px 14px;
+  }
+
+  .course-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .course-footer .btn {
+    width: 100%;
+  }
+
+  /* Interactive Solver on Phone */
+  .solver-card {
+    padding: 18px 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .solver-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .solver-title {
+    font-size: 1.2rem;
+  }
+
+  .solver-inputs-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .form-select, .form-control {
+    font-size: 16px !important; /* Prevents auto-zoom on mobile browsers */
+    width: 100%;
+  }
+
+  .solver-actions {
+    justify-content: stretch;
+  }
+
+  .solver-actions .btn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .solution-summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 12px 14px;
+  }
+
+  .summary-value {
+    font-size: 1.25rem;
+  }
+
+  .solution-step-item {
+    padding: 10px 12px;
+    font-size: 0.82rem;
+    gap: 8px;
+  }
+
+  /* Practice Quiz Modal on Phone */
+  .quiz-modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .quiz-modal-dialog {
+    max-height: 94vh;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .quiz-modal-body {
+    padding: 20px 16px 28px 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .quiz-question-text {
+    font-size: 1.1rem;
+  }
+
+  .quiz-opt-btn {
+    padding: 12px 14px;
+    font-size: 0.88rem;
+  }
+
+  .complete-stats-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .c-stat-box {
+    padding: 12px 6px;
+  }
+
+  .c-stat-num {
+    font-size: 1.2rem;
+  }
+
+  .complete-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .complete-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Extra Small Phones (<= 380px) */
+@media (max-width: 380px) {
+  .page-title {
+    font-size: 1.1rem;
+  }
+
+  .stat-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stat-icon-wrap {
+    margin-bottom: 4px;
+  }
+
+  .techniques-grid {
+    grid-template-columns: 1fr;
   }
 }
