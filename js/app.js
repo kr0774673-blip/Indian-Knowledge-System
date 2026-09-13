@@ -1,4 +1,4 @@
-/**
+/*
  * Main Application Coordinator for Vedic Maths Learning Platform
  * Manages:
  * - Theme Switcher (Dark / Light mode) with localStorage persistence
@@ -231,6 +231,13 @@ class VedicAppCoordinator {
   ------------------------------------------------------------- */
   initComponents() {
     this.quizEngine = new VedicQuizEngine('quiz-modal');
+
+    // Video Lectures extension (Supabase-backed) — additive, degrades gracefully
+    if (typeof VedicVideoLibraryComponent !== 'undefined') {
+      this.videoLibrary = new VedicVideoLibraryComponent('video-modal');
+      this.videoLibrary.init();
+    }
+
     this.updateUserUI();
     this.renderTopTechniques();
     this.renderRecentActivities();
@@ -397,6 +404,9 @@ class VedicAppCoordinator {
           <button class="btn btn-secondary btn-start-module-quiz" data-module-id="${m.id}">
             Practice Quiz
           </button>
+          <button class="btn btn-secondary btn-watch-videos" data-module-id="${m.id}">
+            🎥 Video Lectures
+          </button>
         </div>
       </div>
     `).join('');
@@ -414,8 +424,19 @@ class VedicAppCoordinator {
         this.quizEngine.startQuiz(modId);
       });
     });
-  }
 
+    container.querySelectorAll('.btn-watch-videos').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modId = btn.dataset.moduleId;
+        if (this.videoLibrary) {
+          this.videoLibrary.openForModule(modId);
+        } else {
+          this.showToast('Video Lectures module is not loaded.');
+        }
+      });
+    });
+  }
+  
   /* -------------------------------------------------------------
      RENDER 16 SUTRAS RESOURCE VIEW
   ------------------------------------------------------------- */
