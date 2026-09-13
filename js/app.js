@@ -1,4 +1,4 @@
-/**
+/*
  * Main Application Coordinator for Vedic Maths Learning Platform
  * Manages:
  * - Theme Switcher (Dark / Light mode) with localStorage persistence
@@ -150,36 +150,25 @@ class VedicAppCoordinator {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebar-overlay');
     
-    const setSidebarState = (isOpen) => {
-  if (sidebar) {
-    sidebar.classList.toggle('open', isOpen);
-  }
+    const closeSidebar = () => {
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
+    };
 
-  if (overlay) {
-    overlay.classList.toggle('active', isOpen);
-  }
+    if (mobileMenuBtn && sidebar) {
+      mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+      });
+    }
 
-  // Lock/unlock background page scrolling on mobile
-  document.body.classList.toggle('sidebar-open', isOpen);
-};
+    if (sidebarCloseBtn) {
+      sidebarCloseBtn.addEventListener('click', closeSidebar);
+    }
 
-const closeSidebar = () => {
-  setSidebarState(false);
-};
-
-if (mobileMenuBtn && sidebar) {
-  mobileMenuBtn.addEventListener('click', () => {
-    setSidebarState(true);
-  });
-}
-
-if (sidebarCloseBtn) {
-  sidebarCloseBtn.addEventListener('click', closeSidebar);
-}
-
-if (overlay) {
-  overlay.addEventListener('click', closeSidebar);
-}
+    if (overlay) {
+      overlay.addEventListener('click', closeSidebar);
+    }
   }
 
   navigateTo(viewName) {
@@ -194,14 +183,10 @@ if (overlay) {
     });
 
     // Close mobile sidebar if open
-   const sidebar = document.querySelector('.sidebar');
-const overlay = document.getElementById('sidebar-overlay');
-
-if (sidebar) sidebar.classList.remove('open');
-if (overlay) overlay.classList.remove('active');
-
-// Always unlock page scrolling when navigating
-document.body.classList.remove('sidebar-open');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
 
     // Update Topbar Title
     const titleMap = {
@@ -246,6 +231,13 @@ document.body.classList.remove('sidebar-open');
   ------------------------------------------------------------- */
   initComponents() {
     this.quizEngine = new VedicQuizEngine('quiz-modal');
+
+    // Video Lectures extension (Supabase-backed) — additive, degrades gracefully
+    if (typeof VedicVideoLibraryComponent !== 'undefined') {
+      this.videoLibrary = new VedicVideoLibraryComponent('video-modal');
+      this.videoLibrary.init();
+    }
+
     this.updateUserUI();
     this.renderTopTechniques();
     this.renderRecentActivities();
@@ -412,6 +404,9 @@ document.body.classList.remove('sidebar-open');
           <button class="btn btn-secondary btn-start-module-quiz" data-module-id="${m.id}">
             Practice Quiz
           </button>
+          <button class="btn btn-secondary btn-watch-videos" data-module-id="${m.id}">
+            🎥 Video Lectures
+          </button>
         </div>
       </div>
     `).join('');
@@ -429,8 +424,19 @@ document.body.classList.remove('sidebar-open');
         this.quizEngine.startQuiz(modId);
       });
     });
-  }
 
+    container.querySelectorAll('.btn-watch-videos').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modId = btn.dataset.moduleId;
+        if (this.videoLibrary) {
+          this.videoLibrary.openForModule(modId);
+        } else {
+          this.showToast('Video Lectures module is not loaded.');
+        }
+      });
+    });
+  }
+  
   /* -------------------------------------------------------------
      RENDER 16 SUTRAS RESOURCE VIEW
   ------------------------------------------------------------- */
