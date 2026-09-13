@@ -104,8 +104,10 @@ Indian-Knowledge-System
     │   ├── fractions.js                 # Crosswise fraction arithmetic without LCM
     │   └── trigonometry.js              # Bodhayana Sulba triples & angle ratios (OCP proof)
     └── components/
-        ├── solver.js                    # Dynamic step-by-step sutra visualizer
-        └── quiz.js                      # Speed practice quiz runner with XP & streak scoring
+    |    ├── solver.js                    # Dynamic step-by-step sutra visualizer
+    |    └── quiz.js                      # Speed practice quiz runner with XP & streak scoring
+    └── services/
+          └── supabase-client.js          # Work as database for vedios.
 ```
 
 ---
