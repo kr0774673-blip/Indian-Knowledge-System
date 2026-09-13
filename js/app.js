@@ -150,25 +150,36 @@ class VedicAppCoordinator {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebar-overlay');
     
-    const closeSidebar = () => {
-      if (sidebar) sidebar.classList.remove('open');
-      if (overlay) overlay.classList.remove('active');
-    };
+    const setSidebarState = (isOpen) => {
+  if (sidebar) {
+    sidebar.classList.toggle('open', isOpen);
+  }
 
-    if (mobileMenuBtn && sidebar) {
-      mobileMenuBtn.addEventListener('click', () => {
-        sidebar.classList.add('open');
-        if (overlay) overlay.classList.add('active');
-      });
-    }
+  if (overlay) {
+    overlay.classList.toggle('active', isOpen);
+  }
 
-    if (sidebarCloseBtn) {
-      sidebarCloseBtn.addEventListener('click', closeSidebar);
-    }
+  // Lock/unlock background page scrolling on mobile
+  document.body.classList.toggle('sidebar-open', isOpen);
+};
 
-    if (overlay) {
-      overlay.addEventListener('click', closeSidebar);
-    }
+const closeSidebar = () => {
+  setSidebarState(false);
+};
+
+if (mobileMenuBtn && sidebar) {
+  mobileMenuBtn.addEventListener('click', () => {
+    setSidebarState(true);
+  });
+}
+
+if (sidebarCloseBtn) {
+  sidebarCloseBtn.addEventListener('click', closeSidebar);
+}
+
+if (overlay) {
+  overlay.addEventListener('click', closeSidebar);
+}
   }
 
   navigateTo(viewName) {
@@ -183,10 +194,14 @@ class VedicAppCoordinator {
     });
 
     // Close mobile sidebar if open
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    if (sidebar) sidebar.classList.remove('open');
-    if (overlay) overlay.classList.remove('active');
+   const sidebar = document.querySelector('.sidebar');
+const overlay = document.getElementById('sidebar-overlay');
+
+if (sidebar) sidebar.classList.remove('open');
+if (overlay) overlay.classList.remove('active');
+
+// Always unlock page scrolling when navigating
+document.body.classList.remove('sidebar-open');
 
     // Update Topbar Title
     const titleMap = {
